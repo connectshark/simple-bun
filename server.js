@@ -1,23 +1,28 @@
 import { Hono } from 'hono'
 import { etag } from 'hono/etag'
 import { logger } from 'hono/logger'
-import { poweredBy } from 'hono/powered-by'
 import { cors } from 'hono/cors'
 import { prettyJSON } from 'hono/pretty-json'
+import { serveStatic } from 'hono/bun'
 
 const app = new Hono()
-app.use(poweredBy())
+
+const corsOptions = {
+  credentials: true
+}
+
 app.use(etag(), logger())
-app.use(cors())
-app.use(prettyJSON())
+  .notFound((c) => c.json({ message: 'Not Found', ok: false }, 404))
+  .use(prettyJSON())
+  .use(cors(corsOptions))
 
-app.notFound((c) => c.json({ message: 'Not Found', ok: false }, 404))
+app.get('/', serveStatic({ root: './view/' }))
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
+app.get('/healthz', c => {
+  return c.text('ok')
 })
 
 export default { 
   port: Bun.env.PORT ?? 3000, 
   fetch: app.fetch, 
-} 
+}
