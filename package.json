@@ -1,5 +1,5 @@
 {
-  "name": "simple-bun",
+  "name": "simple-bun-hono",
   "version": "0.2.0",
   "description": "快速開發hono框架",
   "license": "MIT",
@@ -10,10 +10,11 @@
     "url": "https://github.com/connectshark"
   },
   "scripts": {
-    "dev": "bun run --hot server.js"
+    "dev": "bun run --hot server.js",
+    "start": "bun run server.js"
   },
   "dependencies": {
-    "hono": "^4.2.5"
+    "hono": "^4.2.6"
   },
   "devDependencies": {
     "@types/bun": "latest"
